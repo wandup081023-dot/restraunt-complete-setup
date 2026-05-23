@@ -477,10 +477,13 @@ h1, h2, h3, h4, .font-display {
   bottom: 0;
   left: 0;
   right: 0;
+  display: flex;
+  flex-direction: column;
+  height: min(92dvh, 100dvh);
   background: linear-gradient(180deg, #ffffff 0%, #fff8f0 100%);
   border-radius: 28px 28px 0 0;
   z-index: 51;
-  max-height: 88vh;
+  max-height: 92dvh;
   overflow: hidden;
   box-shadow: 0 -24px 64px rgba(26, 26, 26, 0.22);
   border-top: 1px solid rgba(247, 183, 49, 0.2);
@@ -503,6 +506,8 @@ h1, h2, h3, h4, .font-display {
   transition: transform 0.2s ease;
 }
 .cart-checkout-panel {
+  position: sticky;
+  bottom: 0;
   background: rgba(255, 248, 240, 0.95);
   backdrop-filter: blur(12px);
   border-top: 1px solid rgba(230, 92, 0, 0.1);
@@ -879,3 +884,661 @@ h1, h2, h3, h4, .font-display {
 .hover-lift { transition: transform 0.2s ease, box-shadow 0.2s ease; }
 .hover-lift:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 .border-saffron-subtle { border-color: rgba(230,92,0,0.15); }
+
+/* =================== MENU EDITORIAL THEME =================== */
+.menu-page {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #141414;
+  --bg-card: rgba(28, 28, 28, 0.96);
+  --gold: #c9a84c;
+  --gold-light: #e8d5a3;
+  --text-primary: #f5f0e8;
+  --text-secondary: #a89880;
+  --text-muted: #7e7360;
+  --border: rgba(201, 168, 76, 0.14);
+  --border-gold: rgba(201, 168, 76, 0.24);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(201, 168, 76, 0.1), transparent 25%),
+    radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.03), transparent 22%),
+    linear-gradient(180deg, #0a0a0a 0%, #101010 100%);
+  color: var(--text-primary);
+  font-family: 'Jost', sans-serif;
+}
+
+.menu-page h1,
+.menu-page h2,
+.menu-page h3,
+.menu-page h4,
+.menu-page .font-display {
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: -0.01em;
+}
+
+.menu-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.14;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 3px 3px;
+  mix-blend-mode: soft-light;
+}
+
+.menu-page .premium-header,
+.menu-page .sticky-header {
+  background: rgba(10, 10, 10, 0.82);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.16);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+
+.menu-page .logo-ring {
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.55), rgba(232, 213, 163, 0.16));
+  box-shadow: 0 10px 32px rgba(201, 168, 76, 0.18);
+}
+
+.menu-page .logo-inner {
+  background: #111111;
+}
+
+.menu-page .hero-premium {
+  background:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.1), rgba(10, 10, 10, 0.85)),
+    linear-gradient(135deg, rgba(20, 20, 20, 0.96) 0%, rgba(12, 12, 12, 0.9) 60%, rgba(30, 24, 14, 0.92) 100%);
+  border: 1px solid rgba(201, 168, 76, 0.18);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+}
+
+.menu-page .hero-premium::before {
+  opacity: 0.25;
+}
+
+.menu-page .table-badge-premium {
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  background: rgba(20, 20, 20, 0.86);
+  border: 1px solid rgba(201, 168, 76, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.menu-page .section-divider::before,
+.menu-page .section-divider::after {
+  background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.45), transparent);
+}
+
+.menu-page .category-tabs-track {
+  background: rgba(15, 15, 15, 0.76);
+  border: 1px solid rgba(201, 168, 76, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.menu-page .category-tab-pill {
+  color: rgba(245, 240, 232, 0.58);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.menu-page .category-tab-pill.is-active {
+  color: var(--gold-light);
+}
+
+.menu-page .category-tab-count {
+  background: rgba(201, 168, 76, 0.1);
+  color: var(--gold-light);
+}
+
+.menu-page .category-tab-count.is-active {
+  background: rgba(201, 168, 76, 0.18);
+  color: var(--gold-light);
+}
+
+.menu-page .food-card {
+  background: linear-gradient(180deg, rgba(28, 28, 28, 0.98), rgba(20, 20, 20, 0.98));
+  border: 1px solid rgba(201, 168, 76, 0.08);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+}
+
+.menu-page .card-glass {
+  background: rgba(28, 28, 28, 0.96);
+  border: 1px solid rgba(201, 168, 76, 0.08);
+  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.26);
+}
+
+.menu-page .food-card:hover {
+  border-color: rgba(201, 168, 76, 0.3);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.36);
+}
+
+.menu-page .food-card-image-wrap::after {
+  background: linear-gradient(180deg, transparent 10%, rgba(10, 10, 10, 0.12) 45%, rgba(10, 10, 10, 0.92) 100%);
+}
+
+.menu-page .cart-fab {
+  max-width: 520px;
+}
+
+.menu-page .cart-fab-btn {
+  background: linear-gradient(135deg, #151515 0%, #202020 100%);
+  color: var(--text-primary);
+  border: 1px solid rgba(201, 168, 76, 0.18);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.42);
+}
+
+.menu-page .cart-fab-glow {
+  opacity: 0.22;
+}
+
+.menu-page .cart-drawer-overlay,
+.menu-page .order-success-screen {
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.menu-page .cart-drawer {
+  background:
+    radial-gradient(circle at top, rgba(201, 168, 76, 0.05), transparent 28%),
+    linear-gradient(180deg, rgba(17, 17, 17, 0.98) 0%, rgba(9, 9, 9, 0.99) 100%);
+  border-top: 1px solid rgba(201, 168, 76, 0.24);
+  box-shadow: 0 -32px 90px rgba(0, 0, 0, 0.56);
+}
+
+.menu-page .cart-drawer-handle {
+  background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.6), transparent);
+}
+
+.menu-page .cart-line-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(201, 168, 76, 0.08);
+}
+
+.menu-page .cart-checkout-panel {
+  background: linear-gradient(180deg, rgba(9, 9, 9, 0.88), rgba(12, 12, 12, 0.98));
+  border-top: 1px solid rgba(201, 168, 76, 0.12);
+}
+
+.menu-page .order-success-ring::before {
+  background: conic-gradient(from 0deg, rgba(201, 168, 76, 0.05), rgba(201, 168, 76, 0.55), rgba(232, 213, 163, 0.1), rgba(201, 168, 76, 0.05));
+}
+
+.menu-page .success-check-circle {
+  background: linear-gradient(145deg, rgba(201, 168, 76, 0.14), rgba(201, 168, 76, 0.03));
+  border: 1px solid rgba(201, 168, 76, 0.28);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
+}
+
+.menu-page .btn-primary {
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.98), rgba(232, 213, 163, 0.98));
+  color: #111111;
+  box-shadow: 0 16px 36px rgba(201, 168, 76, 0.18);
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+}
+
+.menu-page .btn-secondary,
+.menu-page .btn-ghost {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-primary);
+  border: 1px solid rgba(201, 168, 76, 0.18);
+}
+
+.menu-page .input-field {
+  background: rgba(9, 9, 9, 0.82);
+  border: 1px solid rgba(201, 168, 76, 0.16);
+  color: var(--text-primary);
+}
+
+.menu-page .input-field::placeholder {
+  color: rgba(168, 152, 128, 0.7);
+}
+
+.menu-page .input-field:focus {
+  border-color: rgba(201, 168, 76, 0.45);
+  box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.2), 0 12px 34px rgba(0, 0, 0, 0.3);
+}
+
+.menu-page .price-tag,
+.menu-page .text-gradient-saffron {
+  color: var(--accent);
+}
+
+.menu-page .toggle-slider {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(201, 168, 76, 0.14);
+}
+
+.menu-page .toggle-switch input:checked + .toggle-slider {
+  background: rgba(201, 168, 76, 0.82);
+}
+
+
+/* =================== SHANGRI-LA DARK LUXURY OVERRIDES =================== */
+:root {
+  --bg-primary: #0A0A0A;
+  --bg-secondary: #141414;
+  --bg-card: #1C1C1C;
+  --gold: #C9A84C;
+  --gold-light: #E8D5A3;
+  --text-primary: #F5F0E8;
+  --text-secondary: #A89880;
+  --text-muted: #7E7360;
+  --border: #2A2A2A;
+  --border-gold: rgba(201, 168, 76, 0.3);
+  --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.22);
+  --shadow-md: 0 18px 48px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 28px 80px rgba(0, 0, 0, 0.38);
+  --shadow-saffron: 0 12px 36px rgba(201, 168, 76, 0.16);
+}
+
+body {
+  font-family: 'Jost', sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(201, 168, 76, 0.08), transparent 35%),
+    linear-gradient(180deg, #0a0a0a 0%, #111111 42%, #0a0a0a 100%);
+  color: var(--text-primary);
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0.01em;
+}
+
+::selection {
+  background: rgba(201, 168, 76, 0.25);
+  color: var(--text-primary);
+}
+
+::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(201, 168, 76, 0.45);
+}
+
+.glass,
+.glass-dark,
+.glass-saffron,
+.card,
+.card-glass,
+.btn-primary,
+.btn-secondary,
+.btn-ghost,
+.input-field,
+.badge,
+.badge-table,
+.category-tab,
+.category-tab-pill,
+.food-card,
+.cart-drawer,
+.cart-line-item,
+.cart-checkout-panel,
+.order-success-screen,
+.admin-shell,
+.admin-sidebar,
+.admin-content-card,
+.admin-stat-card,
+.admin-menu-row,
+.qr-grid-card,
+.premium-header,
+.hero-premium,
+.sticky-header,
+.table-badge-premium,
+.cart-fab-btn,
+.toggle-slider {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease,
+    box-shadow 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+}
+
+.menu-page {
+  background:
+    radial-gradient(circle at top, rgba(201, 168, 76, 0.08), transparent 32%),
+    radial-gradient(circle at 100% 18%, rgba(255, 255, 255, 0.03), transparent 18%),
+    linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 100%);
+  color: var(--text-primary);
+}
+
+.menu-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.14;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 3px 3px;
+  mix-blend-mode: soft-light;
+}
+
+.premium-header,
+.sticky-header {
+  background: rgba(10, 10, 10, 0.82);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.16);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+
+.logo-ring {
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.55), rgba(232, 213, 163, 0.16));
+  box-shadow: 0 10px 32px rgba(201, 168, 76, 0.18);
+}
+
+.logo-inner {
+  background: #111111;
+}
+
+.table-badge-premium {
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  background: rgba(20, 20, 20, 0.86);
+  border: 1px solid rgba(201, 168, 76, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.hero-premium {
+  background:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.1), rgba(10, 10, 10, 0.85)),
+    linear-gradient(135deg, rgba(20, 20, 20, 0.96) 0%, rgba(12, 12, 12, 0.9) 60%, rgba(30, 24, 14, 0.92) 100%);
+  border: 1px solid rgba(201, 168, 76, 0.18);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+}
+
+.hero-premium::before {
+  opacity: 0.25;
+}
+
+.section-divider::before,
+.section-divider::after {
+  background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.45), transparent);
+}
+
+.category-tabs-track {
+  background: rgba(15, 15, 15, 0.76);
+  border: 1px solid rgba(201, 168, 76, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.category-tabs-indicator {
+  background: linear-gradient(90deg, rgba(201, 168, 76, 0.08), rgba(201, 168, 76, 0.34), rgba(201, 168, 76, 0.08));
+  box-shadow: none;
+  opacity: 0.92;
+}
+
+.category-tab-pill {
+  color: rgba(245, 240, 232, 0.58);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.category-tab-pill.is-active {
+  color: var(--gold-light);
+}
+
+.category-tab-count {
+  background: rgba(201, 168, 76, 0.1);
+  color: var(--gold-light);
+}
+
+.category-tab-count.is-active {
+  background: rgba(201, 168, 76, 0.18);
+  color: var(--gold-light);
+}
+
+.category-tab {
+  color: rgba(245, 240, 232, 0.6);
+  border: 1px solid rgba(201, 168, 76, 0.12);
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.category-tab.active {
+  color: #111111;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  box-shadow: 0 12px 32px rgba(201, 168, 76, 0.22);
+}
+
+.food-card {
+  background: linear-gradient(180deg, rgba(28, 28, 28, 0.98), rgba(20, 20, 20, 0.98));
+  border: 1px solid rgba(201, 168, 76, 0.08);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+}
+
+.food-card:hover {
+  border-color: rgba(201, 168, 76, 0.3);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.36);
+}
+
+.food-card-image-wrap::after {
+  background: linear-gradient(180deg, transparent 10%, rgba(10, 10, 10, 0.12) 45%, rgba(10, 10, 10, 0.92) 100%);
+}
+
+.cart-fab {
+  max-width: 520px;
+}
+
+.cart-fab-glow {
+  opacity: 0.22;
+}
+
+.cart-fab-btn {
+  background: linear-gradient(135deg, #151515 0%, #202020 100%);
+  border: 1px solid rgba(201, 168, 76, 0.18);
+  color: var(--text-primary);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.42);
+}
+
+.cart-fab-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(201, 168, 76, 0.36);
+}
+
+@keyframes cartFlash {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.42);
+  }
+  30% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.18), 0 0 0 10px rgba(201, 168, 76, 0.08), 0 22px 48px rgba(0, 0, 0, 0.46);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.42);
+  }
+}
+
+.cart-fab-flash .cart-fab-btn {
+  animation: cartFlash 0.9s ease;
+}
+
+.cart-drawer-overlay,
+.order-success-screen {
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.cart-drawer {
+  background:
+    radial-gradient(circle at top, rgba(201, 168, 76, 0.05), transparent 28%),
+    linear-gradient(180deg, rgba(17, 17, 17, 0.98) 0%, rgba(9, 9, 9, 0.99) 100%);
+  border-top: 1px solid rgba(201, 168, 76, 0.24);
+  box-shadow: 0 -32px 90px rgba(0, 0, 0, 0.56);
+}
+
+.cart-drawer-handle {
+  background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.6), transparent);
+}
+
+.cart-line-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(201, 168, 76, 0.08);
+}
+
+.cart-line-item:hover {
+  border-color: rgba(201, 168, 76, 0.2);
+  transform: translateY(-1px);
+}
+
+.cart-checkout-panel {
+  background: linear-gradient(180deg, rgba(9, 9, 9, 0.88), rgba(12, 12, 12, 0.98));
+  border-top: 1px solid rgba(201, 168, 76, 0.12);
+}
+
+.order-success-screen {
+  color: var(--text-primary);
+}
+
+.order-success-ring::before {
+  background: conic-gradient(from 0deg, rgba(201, 168, 76, 0.05), rgba(201, 168, 76, 0.55), rgba(232, 213, 163, 0.1), rgba(201, 168, 76, 0.05));
+  opacity: 0.65;
+}
+
+.success-check-circle {
+  background: linear-gradient(145deg, rgba(201, 168, 76, 0.14), rgba(201, 168, 76, 0.03));
+  border: 1px solid rgba(201, 168, 76, 0.28);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
+}
+
+.admin-shell {
+  background: linear-gradient(180deg, #0a0a0a 0%, #121212 100%);
+  color: var(--text-primary);
+}
+
+.admin-sidebar {
+  background: linear-gradient(180deg, #0f0f0f 0%, #151515 100%);
+  border-right: 1px solid rgba(201, 168, 76, 0.1);
+  box-shadow: 8px 0 32px rgba(0, 0, 0, 0.35);
+}
+
+.admin-nav-item {
+  color: rgba(245, 240, 232, 0.6);
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.admin-nav-item:hover {
+  color: var(--text-primary);
+  background: rgba(201, 168, 76, 0.07);
+}
+
+.admin-nav-item.active {
+  color: var(--gold-light);
+  background: rgba(201, 168, 76, 0.1);
+  border-left: 3px solid var(--gold);
+}
+
+.admin-content-card,
+.card,
+.card-glass,
+.admin-stat-card,
+.admin-menu-row,
+.qr-grid-card {
+  background: linear-gradient(180deg, rgba(28, 28, 28, 0.98), rgba(20, 20, 20, 0.98));
+  border: 1px solid rgba(201, 168, 76, 0.1);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+}
+
+.admin-content-card {
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.admin-stat-card:hover,
+.admin-menu-row:hover,
+.qr-grid-card:hover {
+  border-color: rgba(201, 168, 76, 0.24);
+  transform: translateY(-2px);
+}
+
+.input-field {
+  background: rgba(9, 9, 9, 0.82);
+  color: var(--text-primary);
+  border: 1px solid rgba(201, 168, 76, 0.16);
+}
+
+.input-field::placeholder {
+  color: rgba(168, 152, 128, 0.7);
+}
+
+.input-field:focus {
+  border-color: rgba(201, 168, 76, 0.45);
+  box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.2), 0 12px 34px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.98), rgba(232, 213, 163, 0.98));
+  color: #111111;
+  box-shadow: 0 16px 36px rgba(201, 168, 76, 0.18);
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 20px 46px rgba(201, 168, 76, 0.26);
+}
+
+.btn-secondary,
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-primary);
+  border: 1px solid rgba(201, 168, 76, 0.18);
+}
+
+.btn-secondary:hover,
+.btn-ghost:hover {
+  background: rgba(201, 168, 76, 0.06);
+  border-color: rgba(201, 168, 76, 0.32);
+}
+
+.toggle-slider {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(201, 168, 76, 0.14);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background: rgba(201, 168, 76, 0.82);
+}
+
+.toggle-slider::before {
+  background: #f5f0e8;
+}
+
+.badge-table {
+  background: rgba(201, 168, 76, 0.1);
+  color: var(--gold-light);
+  border-color: rgba(201, 168, 76, 0.24);
+}
+
+.section-fade-enter,
+.animate-fade-up,
+.animate-fade-in,
+.animate-slide-bottom,
+.animate-scale-in {
+  animation-duration: 0.48s;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+
+.food-card .qty-btn-add,
+.food-card .qty-btn-remove {
+  box-shadow: none;
+}
+
+.cart-fab-btn .font-display,
+.table-badge-premium,
+.hero-premium h1,
+.hero-premium h2,
+.admin-content-card h1,
+.admin-content-card h2,
+.admin-content-card h3,
+.order-success-screen h1,
+.cart-drawer h2 {
+  font-family: 'Cormorant Garamond', serif;
+}

@@ -1,19 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 export default function CategoryTabs({ categories, activeCategory, onChange, counts = {} }) {
   const scrollRef = useRef(null)
   const tabRefs = useRef({})
-  const [indicator, setIndicator] = useState({ left: 0, width: 0 })
 
   useEffect(() => {
     const update = () => {
       const el = tabRefs.current[activeCategory]
       const container = scrollRef.current
       if (!el || !container) return
-      setIndicator({
-        left: el.offsetLeft - container.scrollLeft,
-        width: el.offsetWidth,
-      })
       el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
     }
     update()
@@ -28,14 +23,7 @@ export default function CategoryTabs({ categories, activeCategory, onChange, cou
 
   return (
     <div className="category-tabs-wrap">
-      <div className="category-tabs-track scrollbar-hide" ref={scrollRef}>
-        <div
-          className="category-tabs-indicator"
-          style={{
-            transform: `translateX(${indicator.left}px)`,
-            width: indicator.width,
-          }}
-        />
+      <div className="category-tabs-track scrollbar-hide flex items-center gap-5 overflow-x-auto" ref={scrollRef}>
         {categories.map((cat) => {
           const active = activeCategory === cat
           const count = cat === 'All' ? 0 : counts[cat] || 0
@@ -46,7 +34,10 @@ export default function CategoryTabs({ categories, activeCategory, onChange, cou
                 if (node) tabRefs.current[cat] = node
               }}
               type="button"
-              className={`category-tab-pill ${active ? 'is-active' : ''}`}
+              className={`category-tab-pill relative flex-shrink-0 pb-3 pt-1 ${active ? 'is-active' : ''}`}
+              style={{
+                borderBottom: active ? '1px solid rgba(201,168,76,0.9)' : '1px solid transparent',
+              }}
               onClick={() => onChange(cat)}
               aria-pressed={active}
             >

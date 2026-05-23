@@ -1,44 +1,44 @@
-import React from 'react';
+import React from 'react'
 
 export default function LoadingSpinner({ fullScreen = true, message = 'Loading...' }) {
   if (!fullScreen) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="relative w-10 h-10">
-          <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#E65C00] animate-spin" />
-          <div className="absolute inset-1 rounded-full border-2 border-transparent border-t-[#F7B731] animate-spin" style={{ animationDirection: 'reverse', animationDuration: '0.7s' }} />
+        <div className="relative h-10 w-10">
+          <div className="absolute inset-0 rounded-full border border-[rgba(201,168,76,0.18)]" />
+          <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-[var(--accent)] animate-spin" />
+          <div
+            className="absolute inset-1 rounded-full border-2 border-transparent border-t-[rgba(232,213,163,0.72)] animate-spin"
+            style={{ animationDirection: 'reverse', animationDuration: '0.9s' }}
+          />
         </div>
       </div>
-    );
+    )
   }
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center" style={{ background: 'linear-gradient(135deg, #FFF8F0 0%, #FDECD8 100%)' }}>
-      {/* Decorative rings */}
-      <div className="absolute w-64 h-64 rounded-full border border-[rgba(230,92,0,0.08)]" />
-      <div className="absolute w-48 h-48 rounded-full border border-[rgba(230,92,0,0.12)]" />
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-[radial-gradient(circle_at_top,rgba(201,168,76,0.16),transparent_35%),linear-gradient(180deg,#0a0a0a_0%,#101010_100%)]">
+      <div className="absolute h-64 w-64 rounded-full border border-[rgba(201,168,76,0.1)]" />
+      <div className="absolute h-44 w-44 rounded-full border border-[rgba(201,168,76,0.12)]" />
 
-      {/* Logo container */}
       <div className="relative mb-8">
-        <div className="w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: 'linear-gradient(135deg, #E65C00, #F7B731)' }}>
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-            <path d="M20 6C12.268 6 6 12.268 6 20s6.268 14 14 14 14-6.268 14-14S27.732 6 20 6z" fill="rgba(255,255,255,0.2)" />
-            <path d="M14 16c0-1.1.9-2 2-2s2 .9 2 2v8c0 1.1-.9 2-2 2s-2-.9-2-2v-8zM20 12c0-1.1.9-2 2-2s2 .9 2 2v12c0 1.1-.9 2-2 2s-2-.9-2-2V12zM26 18c0-1.1.9-2 2-2s2 .9 2 2v4c0 1.1-.9 2-2 2s-2-.9-2-2v-4z" fill="white" />
+        <div className="flex h-20 w-20 items-center justify-center rounded-[22px] border border-[rgba(201,168,76,0.16)] bg-[rgba(255,255,255,0.02)] shadow-[0_18px_48px_rgba(0,0,0,0.28)]">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" aria-hidden="true">
+            <path d="M21 6C13.268 6 7 12.268 7 20s6.268 14 14 14 14-6.268 14-14S28.732 6 21 6z" fill="rgba(201,168,76,0.08)" />
+            <path d="M15 16c0-1.1.9-2 2-2s2 .9 2 2v8c0 1.1-.9 2-2 2s-2-.9-2-2v-8zM21 12c0-1.1.9-2 2-2s2 .9 2 2v12c0 1.1-.9 2-2 2s-2-.9-2-2V12zM27 18c0-1.1.9-2 2-2s2 .9 2 2v4c0 1.1-.9 2-2 2s-2-.9-2-2v-4z" fill="var(--accent)" />
           </svg>
         </div>
-        {/* Spinner ring */}
-        <div className="absolute -inset-3 rounded-full border-2 border-transparent border-t-[#E65C00] border-r-[#F7B731] animate-spin" style={{ animationDuration: '1.2s' }} />
+        <div className="absolute -inset-3 animate-spin rounded-full border-2 border-transparent border-t-[rgba(201,168,76,0.9)] border-r-[rgba(232,213,163,0.7)]" style={{ animationDuration: '1.2s' }} />
       </div>
 
-      <h2 className="font-display text-2xl font-bold text-[#1A1A1A] mb-2">Spice Garden</h2>
-      <p className="text-sm font-medium text-[#8B7355]">{message}</p>
+      <h2 className="mb-2 font-display text-3xl font-semibold text-[var(--text-primary)]">Spice Garden</h2>
+      <p className="text-sm uppercase tracking-[0.22em] text-[rgba(245,240,232,0.56)]">{message}</p>
 
-      {/* Loading dots */}
-      <div className="flex items-center gap-2 mt-6">
+      <div className="mt-6 flex items-center gap-2">
         {[0, 1, 2].map((i) => (
           <div
             key={i}
-            className="w-2 h-2 rounded-full bg-[#E65C00]"
+            className="h-2 w-2 rounded-full bg-[var(--accent)]"
             style={{
               animation: 'pulse-soft 1.4s ease-in-out infinite',
               animationDelay: `${i * 0.2}s`,
@@ -47,5 +47,5 @@ export default function LoadingSpinner({ fullScreen = true, message = 'Loading..
         ))}
       </div>
     </div>
-  );
+  )
 }

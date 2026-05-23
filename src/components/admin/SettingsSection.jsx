@@ -53,15 +53,14 @@ export default function SettingsSection() {
   ]
 
   return (
-    <form onSubmit={handleSave} className="space-y-8 max-w-lg">
-      {/* Today's offer / discount */}
-      <section className="card p-5 border-2 border-[rgba(230,92,0,0.25)]">
-        <div className="flex items-start justify-between gap-4 mb-4">
+    <form onSubmit={handleSave} className="max-w-2xl space-y-8">
+      <section className="rounded-[28px] border border-[rgba(201,168,76,0.14)] bg-[rgba(16,16,16,0.92)] p-5 shadow-[0_18px_48px_rgba(0,0,0,0.28)]">
+        <div className="mb-4 flex items-start justify-between gap-4">
           <div>
-            <h3 className="font-display text-lg font-bold text-[#1A1A1A]">
+            <h3 className="font-display text-2xl font-semibold text-[var(--text-primary)]">
               Today&apos;s Offer & Discount
             </h3>
-            <p className="text-xs text-[#8B7355] mt-1">
+            <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[rgba(245,240,232,0.5)]">
               Turn ON and save — customers see discount in cart automatically.
             </p>
           </div>
@@ -77,7 +76,7 @@ export default function SettingsSection() {
 
         <div className={`space-y-4 ${!form.offerEnabled ? 'opacity-50 pointer-events-none' : ''}`}>
           <label className="block">
-            <span className="block text-xs font-semibold text-[#1A1A1A] mb-1.5">Offer title</span>
+            <span className="mb-1.5 block text-[10px] uppercase tracking-[0.2em] text-[rgba(245,240,232,0.58)]">Offer title</span>
             <input
               type="text"
               value={form.offerTitle ?? ''}
@@ -88,7 +87,7 @@ export default function SettingsSection() {
           </label>
 
           <label className="block">
-            <span className="block text-xs font-semibold text-[#1A1A1A] mb-1.5">
+            <span className="mb-1.5 block text-[10px] uppercase tracking-[0.2em] text-[rgba(245,240,232,0.58)]">
               Offer message (shown to customers)
             </span>
             <textarea
@@ -101,7 +100,7 @@ export default function SettingsSection() {
           </label>
 
           <label className="block">
-            <span className="block text-xs font-semibold text-[#1A1A1A] mb-1.5">Discount (%)</span>
+            <span className="mb-1.5 block text-[10px] uppercase tracking-[0.2em] text-[rgba(245,240,232,0.58)]">Discount (%)</span>
             <input
               type="number"
               min="0"
@@ -110,7 +109,7 @@ export default function SettingsSection() {
               onChange={(e) => update('discountPercent', e.target.value)}
               className="input-field"
             />
-            <p className="text-[10px] text-[#8B7355] mt-1">
+            <p className="mt-1 text-[10px] text-[rgba(245,240,232,0.48)]">
               Example: 10 = 10% off · ₹249 cart → ₹25 off → ₹224 total
             </p>
           </label>
@@ -118,31 +117,29 @@ export default function SettingsSection() {
 
         {form.offerEnabled && (
           <div
-            className="mt-4 rounded-xl px-4 py-3 text-sm"
-            style={{ background: 'linear-gradient(135deg, rgba(230,92,0,0.12), rgba(247,183,49,0.15))' }}
+            className="mt-4 rounded-[20px] border border-[rgba(201,168,76,0.14)] bg-[rgba(201,168,76,0.06)] px-4 py-3 text-sm"
           >
-            <p className="font-semibold text-[#E65C00]">
+            <p className="font-medium text-[var(--gold-light)]">
               {form.offerTitle || "Today's Offer"}
               {Number(form.discountPercent) > 0 && ` · ${form.discountPercent}% OFF`}
             </p>
             {form.offerDescription && (
-              <p className="text-xs text-[#5A4A3A] mt-1">{form.offerDescription}</p>
+              <p className="mt-1 text-xs text-[rgba(245,240,232,0.58)]">{form.offerDescription}</p>
             )}
           </div>
         )}
       </section>
 
-      {/* General settings */}
       <section>
-        <h3 className="font-display text-lg font-bold text-[#1A1A1A] mb-1">Restaurant Settings</h3>
-        <p className="text-sm text-[#8B7355] mb-4">
+        <h3 className="mb-1 font-display text-2xl font-semibold text-[var(--text-primary)]">Restaurant Settings</h3>
+        <p className="mb-4 text-sm text-[rgba(245,240,232,0.56)]">
           Orders save to Google Sheets via your Apps Script URL.
         </p>
 
         <div className="space-y-4">
           {generalFields.map(({ key, label, type, placeholder }) => (
             <label key={key} className="block">
-              <span className="block text-xs font-semibold text-[#1A1A1A] mb-1.5">{label}</span>
+              <span className="mb-1.5 block text-[10px] uppercase tracking-[0.2em] text-[rgba(245,240,232,0.58)]">{label}</span>
               <input
                 type={type}
                 value={form[key] ?? ''}
@@ -157,7 +154,7 @@ export default function SettingsSection() {
         </div>
       </section>
 
-      <button type="submit" className="btn-primary w-full sm:w-auto">
+      <button type="submit" className="btn-secondary w-full sm:w-auto">
         Save All Settings
       </button>
     </form>

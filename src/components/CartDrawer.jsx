@@ -106,18 +106,18 @@ export default function CartDrawer({ isOpen, onClose }) {
       <div className="cart-drawer">
         <div className="cart-drawer-handle" />
 
-        <div className="flex items-center justify-between border-b border-[rgba(230,92,0,0.08)] px-5 pb-4 pt-1">
+        <div className="flex items-center justify-between border-b border-[rgba(201,168,76,0.12)] px-5 pb-4 pt-2">
           <div>
-            <h2 className="font-display text-2xl font-bold text-[#1A1A1A]">Your Cart</h2>
-            <p className="mt-0.5 flex items-center gap-1.5 text-xs text-[#8B7355]">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500" />
+            <h2 className="font-display text-3xl font-semibold text-[var(--text-primary)]">Your Cart</h2>
+            <p className="mt-1 flex items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-[rgba(245,240,232,0.5)]">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
               {tableLabel} · {cartCount} {cartCount === 1 ? 'item' : 'items'}
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(26,26,26,0.06)] text-xl text-[#1A1A1A] transition-colors hover:bg-[rgba(230,92,0,0.1)]"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(201,168,76,0.14)] bg-[rgba(255,255,255,0.02)] text-2xl text-[var(--text-primary)] transition-colors hover:bg-[rgba(201,168,76,0.08)]"
             aria-label="Close cart"
           >
             ×
@@ -125,27 +125,27 @@ export default function CartDrawer({ isOpen, onClose }) {
         </div>
 
         {pricing.offerActive && pricing.discountPercent > 0 && (
-          <div className="mx-5 mb-3 rounded-2xl border border-[rgba(247,183,49,0.35)] bg-gradient-to-r from-[rgba(230,92,0,0.08)] to-[rgba(247,183,49,0.12)] px-4 py-3">
-            <p className="text-sm font-bold text-[#E65C00]">
-              🎉 {pricing.offerTitle} — {pricing.discountPercent}% OFF
+          <div className="mx-5 mb-3 rounded-[22px] border border-[rgba(201,168,76,0.16)] bg-[rgba(201,168,76,0.06)] px-4 py-3">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--accent)]">
+              {pricing.offerTitle} — {pricing.discountPercent}% OFF
             </p>
             {pricing.hasDiscount && (
-              <p className="mt-1 text-xs font-semibold text-green-700">
+              <p className="mt-2 text-xs text-[rgba(245,240,232,0.68)]">
                 You save {formatPrice(pricing.discountAmount, currencySymbol)} on this order
               </p>
             )}
           </div>
         )}
 
-        <div className="max-h-[42dvh] space-y-2.5 overflow-y-auto px-5 py-2">
+        <div className="max-h-[42dvh] space-y-3 overflow-y-auto px-5 py-3">
           {cartItems.length === 0 ? (
-            <div className="py-14 text-center">
-              <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-[rgba(230,92,0,0.08)]">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E65C00" strokeWidth="1.5">
+            <div className="py-16 text-center">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-[rgba(201,168,76,0.18)] bg-[rgba(201,168,76,0.06)] text-[var(--gold-light)]">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M4 4h16l-1.5 10.5a2 2 0 01-2 1.5H7.5a2 2 0 01-2-1.5L4 4z" />
                 </svg>
               </div>
-              <p className="text-[#8B7355]">Your cart is empty</p>
+              <p className="text-[rgba(245,240,232,0.6)]">Your cart is empty</p>
             </div>
           ) : (
             cartItems.map((item, i) => (
@@ -154,21 +154,18 @@ export default function CartDrawer({ isOpen, onClose }) {
                 className="cart-line-item"
                 style={{ animation: `fadeUp 0.35s ease ${i * 50}ms both` }}
               >
-                <div
-                  className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl font-display text-lg font-bold text-white"
-                  style={{ background: 'linear-gradient(135deg, #E65C00, #F7B731)' }}
-                >
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-[rgba(201,168,76,0.14)] bg-[rgba(255,255,255,0.03)] font-display text-lg font-semibold text-[var(--gold-light)]">
                   {item.name?.charAt(0)}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-semibold text-[#1A1A1A]">
+                  <p className="truncate text-[var(--text-primary)]">
                     {item.quantity}× {item.name}
                   </p>
-                  <p className="text-xs text-[#8B7355]">
+                  <p className="text-xs text-[rgba(245,240,232,0.58)]">
                     {formatPrice(item.price, currencySymbol)} each
                   </p>
                 </div>
-                <p className="font-bold text-[#E65C00]">
+                <p className="font-display text-lg font-semibold text-[var(--accent)]">
                   {formatPrice(item.price * item.quantity, currencySymbol)}
                 </p>
               </div>
@@ -176,28 +173,28 @@ export default function CartDrawer({ isOpen, onClose }) {
           )}
         </div>
 
-        <div className="cart-checkout-panel">
-          <div className="mb-3 space-y-2 rounded-2xl bg-white/80 p-4">
-            <div className="flex justify-between text-sm text-[#5A4A3A]">
+        <div className="cart-checkout-panel px-5 pb-[max(20px,env(safe-area-inset-bottom))] pt-4">
+          <div className="mb-4 space-y-2 rounded-[22px] border border-[rgba(201,168,76,0.14)] bg-[rgba(255,255,255,0.02)] p-4">
+            <div className="flex justify-between text-sm text-[rgba(245,240,232,0.68)]">
               <span>Subtotal</span>
               <span>{formatPrice(pricing.subtotal, currencySymbol)}</span>
             </div>
             {pricing.hasDiscount && (
-              <div className="flex justify-between rounded-xl bg-green-50 px-3 py-2 text-sm font-semibold text-green-800">
+              <div className="flex justify-between rounded-xl border border-[rgba(201,168,76,0.14)] bg-[rgba(201,168,76,0.06)] px-3 py-2 text-sm text-[var(--gold-light)]">
                 <span>Discount ({pricing.discountPercent}%)</span>
                 <span>−{formatPrice(pricing.discountAmount, currencySymbol)}</span>
               </div>
             )}
-            <div className="flex justify-between border-t border-[rgba(230,92,0,0.1)] pt-2 text-lg font-bold">
-              <span>Total</span>
-              <span className="text-gradient-saffron text-xl font-bold" style={{ WebkitTextFillColor: '#E65C00' }}>
+            <div className="flex justify-between border-t border-[rgba(201,168,76,0.14)] pt-3 text-lg">
+              <span className="font-medium text-[var(--text-primary)]">Total</span>
+              <span className="font-display text-2xl font-semibold text-[var(--accent)]">
                 {formatPrice(pricing.total, currencySymbol)}
               </span>
             </div>
           </div>
 
           <label className="mb-3 block">
-            <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-[#8B7355]">
+            <span className="mb-2 block text-[10px] uppercase tracking-[0.26em] text-[rgba(245,240,232,0.5)]">
               Your name <span className="text-red-500">*</span>
             </span>
             <input
@@ -212,12 +209,12 @@ export default function CartDrawer({ isOpen, onClose }) {
               aria-invalid={!nameValid && customerName.length > 0}
             />
             {!nameValid && (
-              <p className="mt-1 text-[10px] text-[#8B7355]">Required — at least 2 characters</p>
+              <p className="mt-1 text-[10px] text-[rgba(29,35,48,0.48)]">Required — at least 2 characters</p>
             )}
           </label>
 
           <label className="mb-4 block">
-            <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-[#8B7355]">
+            <span className="mb-2 block text-[10px] uppercase tracking-[0.26em] text-[rgba(245,240,232,0.5)]">
               Special instructions
             </span>
             <textarea
@@ -230,7 +227,7 @@ export default function CartDrawer({ isOpen, onClose }) {
           </label>
 
           {error && (
-            <p className="mb-3 rounded-xl bg-red-50 px-3 py-2 text-center text-sm text-red-600">
+            <p className="mb-3 rounded-xl border border-[rgba(220,80,80,0.22)] bg-[rgba(220,80,80,0.1)] px-3 py-2 text-center text-sm text-[rgba(245,240,232,0.92)]">
               {error}
             </p>
           )}
@@ -245,10 +242,10 @@ export default function CartDrawer({ isOpen, onClose }) {
             {isSubmitting ? (
               <span className="flex items-center justify-center gap-2">
                 <LoadingSpinner fullScreen={false} />
-                Placing your order...
+                PLACING YOUR ORDER
               </span>
             ) : (
-              <>Place Order · {formatPrice(pricing.total, currencySymbol)}</>
+              <>PLACE ORDER · {formatPrice(pricing.total, currencySymbol)}</>
             )}
           </button>
         </div>

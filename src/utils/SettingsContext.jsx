@@ -13,7 +13,7 @@ const DEFAULT_SETTINGS = {
   currencySymbol: '₹',
   gstPercent: 5,
   enableGst: true,
-  primaryColor: '#E65C00',
+  primaryColor: '#C9A84C',
   logoUrl: '',
   openingHours: '11:00 AM – 11:00 PM',
   phone: '',

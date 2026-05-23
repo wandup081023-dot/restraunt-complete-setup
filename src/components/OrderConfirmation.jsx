@@ -11,35 +11,48 @@ export default function OrderConfirmation({
   const total = pricing?.total ?? 0
 
   return (
-    <div className="order-success-screen">
-      <div className="order-success-ring">
-        <div className="success-check-circle">
-          <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
-            <path
-              d="M14 27l8 8 16-20"
-              stroke="white"
-              strokeWidth="5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="order-success-check"
+    <div className="order-success-screen flex items-center justify-center px-4 py-8">
+      <div className="flex w-full max-w-lg flex-col items-center">
+        <div className="order-success-ring relative mb-8">
+          <svg width="120" height="120" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+            <circle
+              cx="60"
+              cy="60"
+              r="45"
+              className="order-success-circle"
+              stroke="rgba(201,168,76,0.9)"
+              strokeWidth="2.5"
+              fill="rgba(9,9,9,0.84)"
             />
           </svg>
+
+          <div className="success-check-circle absolute inset-[18px] flex items-center justify-center rounded-full">
+            <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+              <path
+                d="M14 27l8 8 16-20"
+                stroke="var(--gold-light)"
+                strokeWidth="4.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="order-success-check"
+              />
+            </svg>
+          </div>
         </div>
-      </div>
 
       <div className="text-center section-fade-enter" style={{ animationDelay: '0.2s' }}>
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E65C00]">
+        <p className="text-[10px] uppercase tracking-[0.42em] text-[var(--gold-light)]">
           Success
         </p>
-        <h1 className="font-display mt-2 text-3xl font-bold text-[#1A1A1A] md:text-4xl">
+        <h1 className="mt-3 font-display text-4xl font-semibold text-[var(--text-primary)] md:text-5xl">
           Order Placed!
         </h1>
-        <p className="mt-2 text-lg text-[#5A4A3A]">
-          Table <span className="font-bold text-[#E65C00]">{tableNumber}</span>
+        <p className="mt-3 text-base text-[rgba(245,240,232,0.68)] md:text-lg">
+          Table <span className="text-[var(--accent)]">{tableNumber}</span>
           {customerName && (
             <span>
               {' '}
-              · <span className="font-medium">{customerName}</span>
+              · <span className="text-[var(--text-primary)]">{customerName}</span>
             </span>
           )}
         </p>
@@ -47,39 +60,39 @@ export default function OrderConfirmation({
 
       {cartItems.length > 0 && (
         <div
-          className="card-glass mx-auto mt-8 w-full max-w-sm p-6 section-fade-enter"
+          className="card-glass mx-auto mt-8 w-full max-w-sm rounded-[28px] p-6 section-fade-enter"
           style={{ animationDelay: '0.35s' }}
         >
-          <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-[#8B7355]">
+          <p className="mb-4 text-[10px] uppercase tracking-[0.28em] text-[rgba(245,240,232,0.5)]">
             Order summary
           </p>
           <ul className="max-h-48 space-y-3 overflow-y-auto">
             {cartItems.map((item) => (
-              <li key={item.id} className="flex justify-between gap-3 text-sm">
-                <span className="text-[#1A1A1A]">
-                  <span className="font-bold text-[#E65C00]">{item.quantity}×</span> {item.name}
+              <li key={item.id} className="flex justify-between gap-3 text-sm text-[rgba(245,240,232,0.72)]">
+                <span>
+                  <span className="font-semibold text-[var(--accent)]">{item.quantity}×</span> {item.name}
                 </span>
-                <span className="shrink-0 font-semibold">
+                <span className="shrink-0 text-[rgba(245,240,232,0.64)]">
                   {formatPrice(item.price * item.quantity, currencySymbol)}
                 </span>
               </li>
             ))}
           </ul>
           {pricing?.hasDiscount && (
-            <div className="mt-4 space-y-1 border-t border-[rgba(230,92,0,0.1)] pt-3 text-sm">
-              <div className="flex justify-between text-[#5A4A3A]">
+            <div className="mt-4 space-y-1 border-t border-[rgba(201,168,76,0.14)] pt-3 text-sm">
+              <div className="flex justify-between text-[rgba(245,240,232,0.68)]">
                 <span>Subtotal</span>
                 <span>{formatPrice(pricing.subtotal, currencySymbol)}</span>
               </div>
-              <div className="flex justify-between font-medium text-green-700">
+              <div className="flex justify-between text-[var(--accent)]">
                 <span>Discount</span>
                 <span>−{formatPrice(pricing.discountAmount, currencySymbol)}</span>
               </div>
             </div>
           )}
-          <div className="mt-4 flex justify-between border-t border-[rgba(230,92,0,0.15)] pt-4">
-            <span className="font-display text-lg font-bold">Total paid</span>
-            <span className="font-display text-2xl font-bold text-[#E65C00]">
+          <div className="mt-4 flex justify-between border-t border-[rgba(201,168,76,0.14)] pt-4">
+            <span className="font-display text-xl font-semibold text-[var(--text-primary)]">Total paid</span>
+            <span className="font-display text-3xl font-semibold text-[var(--accent)]">
               {formatPrice(total, currencySymbol)}
             </span>
           </div>
@@ -87,22 +100,23 @@ export default function OrderConfirmation({
       )}
 
       <p
-        className="mt-6 max-w-xs text-center text-[#5A4A3A] section-fade-enter"
+        className="mt-6 max-w-xs text-center text-[rgba(245,240,232,0.62)] section-fade-enter"
         style={{ animationDelay: '0.5s' }}
       >
-        Our team will serve you shortly 😊
+        Our team will serve you shortly.
         <br />
-        <span className="text-sm text-[#8B7355]">Sit back and enjoy!</span>
+        <span className="text-sm text-[rgba(245,240,232,0.46)]">Sit back and enjoy.</span>
       </p>
 
       <button
         type="button"
         onClick={onDone}
-        className="btn-primary mt-8 w-full max-w-sm section-fade-enter"
+        className="btn-secondary mt-8 w-full max-w-sm section-fade-enter"
         style={{ animationDelay: '0.6s', minHeight: 56, borderRadius: 18 }}
       >
-        New Order
+        NEW ORDER
       </button>
+      </div>
     </div>
   )
 }
