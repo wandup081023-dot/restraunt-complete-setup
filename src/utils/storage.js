@@ -1,4 +1,4 @@
-import { defaultMenuItems } from '../data/defaultMenu'
+import { defaultMenu } from '../data/defaultMenu'
 import { defaultSettings, GOOGLE_SCRIPT_URL, STORAGE_KEYS } from '../data/defaultSettings'
 
 export function getSettings() {
@@ -32,7 +32,7 @@ export function getMenuItems() {
   } catch {
     /* ignore */
   }
-  return [...defaultMenuItems]
+  return [...defaultMenu]
 }
 
 export function saveMenuItems(items) {

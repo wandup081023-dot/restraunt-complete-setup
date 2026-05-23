@@ -1,7 +1,5 @@
 import { formatItemsForSheet, formatTimestamp } from './format'
-
-const GOOGLE_SCRIPT_URL =
-  'https://script.google.com/macros/s/AKfycbzQhNqdIFkFGWViJdUvCNQ2hlAuHSMMJ4-EO0nrX9Ra7yS9kuzB21hVJfA-W3Qei8qRVg/exec'
+import { GOOGLE_SCRIPT_URL } from '../data/defaultSettings'
 
 export function getGoogleScriptUrl(settings) {
   return settings?.googleScriptUrl?.trim() || GOOGLE_SCRIPT_URL
@@ -23,22 +21,30 @@ export async function submitOrderToGoogleSheets(scriptUrl, payload) {
 export function buildOrderPayload({
   tableLabel,
   customerName,
-  cart,
-  menuItems,
+  cartItems,
+  subtotal,
   total,
+  discountAmount = 0,
+  discountPercent = 0,
+  offerTitle = '',
   specialInstructions,
-  currencySymbol,
+  currencySymbol = '₹',
 }) {
-  const timestamp = formatTimestamp()
-  const items = formatItemsForSheet(cart, menuItems, currencySymbol)
+  const notes = [specialInstructions?.trim()].filter(Boolean)
+  if (discountAmount > 0) {
+    notes.push(
+      `Discount: ${discountPercent}% off (${offerTitle || "Offer"}) — saved ${currencySymbol}${discountAmount}`,
+    )
+  }
 
   return {
-    timestamp,
+    timestamp: formatTimestamp(),
     table: tableLabel,
-    customerName: customerName?.trim() || 'Guest',
-    items,
+    customerName: customerName?.trim(),
+    items: formatItemsForSheet(cartItems, currencySymbol),
+    subtotal: `${currencySymbol}${subtotal}`,
     total: `${currencySymbol}${total}`,
-    specialInstructions: specialInstructions?.trim() || '',
+    specialInstructions: notes.join(' | ') || '',
     status: 'New',
   }
 }
@@ -47,25 +53,37 @@ export async function placeOrder({
   settings,
   tableLabel,
   customerName,
-  cart,
-  menuItems,
+  cartItems,
+  subtotal,
   total,
+  discountAmount,
+  discountPercent,
+  offerTitle,
   specialInstructions,
 }) {
-  const currencySymbol = settings.currencySymbol || '₹'
-  const timestamp = formatTimestamp()
-
+  const currencySymbol = settings?.currencySymbol || '₹'
   const sheetPayload = buildOrderPayload({
     tableLabel,
     customerName,
-    cart,
-    menuItems,
+    cartItems,
+    subtotal,
     total,
+    discountAmount,
+    discountPercent,
+    offerTitle,
     specialInstructions,
     currencySymbol,
   })
 
   await submitOrderToGoogleSheets(getGoogleScriptUrl(settings), sheetPayload)
 
-  return { success: true, timestamp }
+  return { success: true, timestamp: sheetPayload.timestamp }
+}
+
+export async function fetchMenuFromSheets(scriptUrl) {
+  const url = `${getGoogleScriptUrl({ googleScriptUrl: scriptUrl })}?action=getMenu`
+  const res = await fetch(url)
+  if (!res.ok) throw new Error('Menu fetch failed')
+  const data = await res.json()
+  return data?.items?.length ? data.items : null
 }

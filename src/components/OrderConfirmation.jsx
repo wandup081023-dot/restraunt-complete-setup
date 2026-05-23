@@ -2,68 +2,107 @@ import { formatPrice } from '../utils/format'
 
 export default function OrderConfirmation({
   tableNumber,
-  cart,
-  menuItems,
-  total,
-  currencySymbol,
-  onNewOrder,
+  customerName,
+  cartItems = [],
+  pricing,
+  currencySymbol = '₹',
+  onDone,
 }) {
-  const lines = cart
-    .map(({ id, quantity }) => {
-      const item = menuItems.find((m) => m.id === id)
-      if (!item) return null
-      return { name: item.name, quantity, total: item.price * quantity }
-    })
-    .filter(Boolean)
+  const total = pricing?.total ?? 0
 
   return (
-    <div className="animate-fade-in fixed inset-0 z-[60] flex items-center justify-center bg-cream p-4">
-      <div className="w-full max-w-md rounded-3xl bg-white p-8 text-center shadow-2xl">
-        <div className="relative mx-auto mb-6 flex h-24 w-24 items-center justify-center">
-          <span className="absolute inset-0 animate-ping rounded-full bg-green-400/30" />
-          <div className="checkmark-pop relative flex h-20 w-20 items-center justify-center rounded-full bg-green-500 text-4xl text-white shadow-lg shadow-green-500/30">
-            ✓
-          </div>
+    <div className="order-success-screen">
+      <div className="order-success-ring">
+        <div className="success-check-circle">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <path
+              d="M14 27l8 8 16-20"
+              stroke="white"
+              strokeWidth="5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="order-success-check"
+            />
+          </svg>
         </div>
+      </div>
 
-        <h2 className="font-heading text-3xl font-bold text-charcoal">
-          Order Placed Successfully!
-        </h2>
+      <div className="text-center section-fade-enter" style={{ animationDelay: '0.2s' }}>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E65C00]">
+          Success
+        </p>
+        <h1 className="font-display mt-2 text-3xl font-bold text-[#1A1A1A] md:text-4xl">
+          Order Placed!
+        </h1>
+        <p className="mt-2 text-lg text-[#5A4A3A]">
+          Table <span className="font-bold text-[#E65C00]">{tableNumber}</span>
+          {customerName && (
+            <span>
+              {' '}
+              · <span className="font-medium">{customerName}</span>
+            </span>
+          )}
+        </p>
+      </div>
 
-        <p className="mt-2 text-lg font-semibold text-saffron">Table {tableNumber}</p>
-
-        <div className="mt-6 rounded-2xl bg-cream p-4 text-left">
-          <p className="mb-3 text-sm font-medium text-charcoal/70">Your order</p>
-          <ul className="space-y-2">
-            {lines.map((line) => (
-              <li key={line.name} className="flex justify-between text-sm">
-                <span>
-                  {line.quantity}× {line.name}
+      {cartItems.length > 0 && (
+        <div
+          className="card-glass mx-auto mt-8 w-full max-w-sm p-6 section-fade-enter"
+          style={{ animationDelay: '0.35s' }}
+        >
+          <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-[#8B7355]">
+            Order summary
+          </p>
+          <ul className="max-h-48 space-y-3 overflow-y-auto">
+            {cartItems.map((item) => (
+              <li key={item.id} className="flex justify-between gap-3 text-sm">
+                <span className="text-[#1A1A1A]">
+                  <span className="font-bold text-[#E65C00]">{item.quantity}×</span> {item.name}
                 </span>
-                <span className="font-medium text-charcoal">
-                  {formatPrice(line.total, currencySymbol)}
+                <span className="shrink-0 font-semibold">
+                  {formatPrice(item.price * item.quantity, currencySymbol)}
                 </span>
               </li>
             ))}
           </ul>
-          <p className="mt-4 flex justify-between border-t border-charcoal/10 pt-3 text-lg font-bold">
-            <span>Total</span>
-            <span className="text-saffron">{formatPrice(total, currencySymbol)}</span>
-          </p>
+          {pricing?.hasDiscount && (
+            <div className="mt-4 space-y-1 border-t border-[rgba(230,92,0,0.1)] pt-3 text-sm">
+              <div className="flex justify-between text-[#5A4A3A]">
+                <span>Subtotal</span>
+                <span>{formatPrice(pricing.subtotal, currencySymbol)}</span>
+              </div>
+              <div className="flex justify-between font-medium text-green-700">
+                <span>Discount</span>
+                <span>−{formatPrice(pricing.discountAmount, currencySymbol)}</span>
+              </div>
+            </div>
+          )}
+          <div className="mt-4 flex justify-between border-t border-[rgba(230,92,0,0.15)] pt-4">
+            <span className="font-display text-lg font-bold">Total paid</span>
+            <span className="font-display text-2xl font-bold text-[#E65C00]">
+              {formatPrice(total, currencySymbol)}
+            </span>
+          </div>
         </div>
+      )}
 
-        <p className="mt-5 text-charcoal/80">
-          Our team will serve you shortly 😊
-        </p>
+      <p
+        className="mt-6 max-w-xs text-center text-[#5A4A3A] section-fade-enter"
+        style={{ animationDelay: '0.5s' }}
+      >
+        Our team will serve you shortly 😊
+        <br />
+        <span className="text-sm text-[#8B7355]">Sit back and enjoy!</span>
+      </p>
 
-        <button
-          type="button"
-          onClick={onNewOrder}
-          className="mt-6 min-h-14 w-full rounded-xl bg-saffron text-lg font-semibold text-white shadow-md transition-transform active:scale-[0.98]"
-        >
-          New Order
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={onDone}
+        className="btn-primary mt-8 w-full max-w-sm section-fade-enter"
+        style={{ animationDelay: '0.6s', minHeight: 56, borderRadius: 18 }}
+      >
+        New Order
+      </button>
     </div>
   )
 }

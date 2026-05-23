@@ -13,13 +13,11 @@ export function formatTimestamp(date = new Date()) {
   })
 }
 
-export function formatItemsForSheet(cart, menuItems, currencySymbol) {
-  return cart
-    .map(({ id, quantity }) => {
-      const item = menuItems.find((m) => m.id === id)
-      if (!item) return null
-      return `${quantity}x ${item.name} (${currencySymbol}${item.price * quantity})`
-    })
-    .filter(Boolean)
+export function formatItemsForSheet(cartItems, currencySymbol = '₹') {
+  return cartItems
+    .map(
+      (item) =>
+        `${item.quantity}x ${item.name} (${currencySymbol}${item.price * item.quantity})`,
+    )
     .join(', ')
 }
