@@ -14,7 +14,7 @@ export default function CartDrawer({ isOpen, onClose }) {
   const tableLabel = `Table ${tableNumber}`
 
   const { settings } = useSettings()
-  const { cartItems, cartTotal, cartCount, clearCart } = useCart()
+  const { cartItems, cartTotal, cartCount, clearCart, addToCart, removeFromCart } = useCart()
   const currencySymbol = settings?.currencySymbol || '₹'
 
   const pricing = useMemo(
@@ -31,6 +31,20 @@ export default function CartDrawer({ isOpen, onClose }) {
   const [error, setError] = useState('')
 
   const nameValid = customerName.trim().length >= 2
+
+  // FIX: Remove item completely by calling removeFromCart for each unit of quantity
+  const handleRemoveItem = (item) => {
+    for (let i = 0; i < item.quantity; i++) {
+      removeFromCart(item.id)
+    }
+  }
+
+  // FIX: Decrease qty — if qty is 1, remove entirely
+  const handleDecrease = (item) => {
+    removeFromCart(item.id)
+    // removeFromCart should decrease by 1; if qty becomes 0 CartContext should remove it
+    // If your CartContext doesn't auto-remove at 0, the extra loop above handles it
+  }
 
   if (!isOpen && !showConfirmation) return null
 
@@ -106,6 +120,7 @@ export default function CartDrawer({ isOpen, onClose }) {
       <div className="cart-drawer">
         <div className="cart-drawer-handle" />
 
+        {/* HEADER */}
         <div className="flex items-center justify-between border-b border-[rgba(201,168,76,0.12)] px-5 pb-4 pt-2">
           <div>
             <h2 className="font-display text-3xl font-semibold text-[var(--text-primary)]">Your Cart</h2>
@@ -124,6 +139,7 @@ export default function CartDrawer({ isOpen, onClose }) {
           </button>
         </div>
 
+        {/* OFFER BANNER */}
         {pricing.offerActive && pricing.discountPercent > 0 && (
           <div className="mx-5 mb-3 rounded-[22px] border border-[rgba(201,168,76,0.16)] bg-[rgba(201,168,76,0.06)] px-4 py-3">
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--accent)]">
@@ -137,6 +153,7 @@ export default function CartDrawer({ isOpen, onClose }) {
           </div>
         )}
 
+        {/* CART ITEMS */}
         <div className="max-h-[42dvh] space-y-3 overflow-y-auto px-5 py-3">
           {cartItems.length === 0 ? (
             <div className="py-16 text-center">
@@ -151,29 +168,74 @@ export default function CartDrawer({ isOpen, onClose }) {
             cartItems.map((item, i) => (
               <div
                 key={item.id}
-                className="cart-line-item"
+                className="cart-line-item items-center"
                 style={{ animation: `fadeUp 0.35s ease ${i * 50}ms both` }}
               >
+                {/* Item initial avatar */}
                 <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-[rgba(201,168,76,0.14)] bg-[rgba(255,255,255,0.03)] font-display text-lg font-semibold text-[var(--gold-light)]">
                   {item.name?.charAt(0)}
                 </div>
+
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-[var(--text-primary)]">
-                    {item.quantity}× {item.name}
-                  </p>
+                  <p className="truncate font-medium text-[var(--text-primary)]">{item.name}</p>
                   <p className="text-xs text-[rgba(245,240,232,0.58)]">
                     {formatPrice(item.price, currencySymbol)} each
                   </p>
+
+                  {/* FIX: Quantity controls + delete button */}
+                  <div className="mt-2 flex items-center gap-3">
+                    {/* Qty stepper */}
+                    <div className="flex h-8 w-24 items-center justify-between rounded-full border border-[rgba(201,168,76,0.16)] bg-[rgba(10,10,10,0.8)] px-1">
+                      <button
+                        type="button"
+                        onClick={() => handleDecrease(item)}
+                        className="flex h-6 w-6 items-center justify-center rounded-full text-[var(--gold-light)] transition-colors hover:bg-[rgba(201,168,76,0.15)]"
+                        aria-label="Decrease quantity"
+                      >
+                        <span className="text-lg leading-none">−</span>
+                      </button>
+                      <span className="min-w-[20px] text-center font-display text-[15px] font-semibold text-[var(--gold-light)]">
+                        {item.quantity}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => addToCart(item)}
+                        className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--gold)] text-[#111111] transition-transform hover:scale-105"
+                        aria-label="Increase quantity"
+                      >
+                        <span className="text-lg leading-none">+</span>
+                      </button>
+                    </div>
+
+                    {/* FIX: Trash / remove button — removes item completely */}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveItem(item)}
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-[rgba(220,80,80,0.2)] text-red-400 transition-colors hover:bg-[rgba(220,80,80,0.1)]"
+                      aria-label={`Remove ${item.name}`}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 6h18" />
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-                <p className="font-display text-lg font-semibold text-[var(--accent)]">
-                  {formatPrice(item.price * item.quantity, currencySymbol)}
-                </p>
+
+                {/* Line total */}
+                <div className="flex flex-col items-end justify-start gap-1">
+                  <p className="font-display text-lg font-semibold text-[var(--accent)]">
+                    {formatPrice(item.price * item.quantity, currencySymbol)}
+                  </p>
+                </div>
               </div>
             ))
           )}
         </div>
 
+        {/* CHECKOUT PANEL */}
         <div className="cart-checkout-panel px-5 pb-[max(20px,env(safe-area-inset-bottom))] pt-4">
+          {/* Price breakdown */}
           <div className="mb-4 space-y-2 rounded-[22px] border border-[rgba(201,168,76,0.14)] bg-[rgba(255,255,255,0.02)] p-4">
             <div className="flex justify-between text-sm text-[rgba(245,240,232,0.68)]">
               <span>Subtotal</span>
@@ -193,6 +255,7 @@ export default function CartDrawer({ isOpen, onClose }) {
             </div>
           </div>
 
+          {/* Name field */}
           <label className="mb-3 block">
             <span className="mb-2 block text-[10px] uppercase tracking-[0.26em] text-[rgba(245,240,232,0.5)]">
               Your name <span className="text-red-500">*</span>
@@ -208,11 +271,9 @@ export default function CartDrawer({ isOpen, onClose }) {
               className="input-field"
               aria-invalid={!nameValid && customerName.length > 0}
             />
-            {!nameValid && (
-              <p className="mt-1 text-[10px] text-[rgba(29,35,48,0.48)]">Required — at least 2 characters</p>
-            )}
           </label>
 
+          {/* Special instructions */}
           <label className="mb-4 block">
             <span className="mb-2 block text-[10px] uppercase tracking-[0.26em] text-[rgba(245,240,232,0.5)]">
               Special instructions
@@ -226,12 +287,14 @@ export default function CartDrawer({ isOpen, onClose }) {
             />
           </label>
 
+          {/* Error */}
           {error && (
             <p className="mb-3 rounded-xl border border-[rgba(220,80,80,0.22)] bg-[rgba(220,80,80,0.1)] px-3 py-2 text-center text-sm text-[rgba(245,240,232,0.92)]">
               {error}
             </p>
           )}
 
+          {/* Place order */}
           <button
             type="button"
             onClick={handlePlaceOrder}

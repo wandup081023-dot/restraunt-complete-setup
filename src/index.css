@@ -31,12 +31,14 @@
 }
 
 * {
+  box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
 html {
-  scroll-behavior: smooth;
+  /* FIX: Reset scroll-behavior to auto instead of smooth to stop it scrolling downward on load */
+  scroll-behavior: auto;
 }
 
 body {
@@ -45,7 +47,8 @@ body {
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  /* FIX: Ensure overflow-x prevents layout shifts pulling objects upward */
+  overflow-x: hidden; 
 }
 
 h1, h2, h3, h4, .font-display {
@@ -355,6 +358,8 @@ h1, h2, h3, h4, .font-display {
   border-radius: var(--radius-full);
   border: 1px solid rgba(230, 92, 0, 0.12);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
 }
 .category-tabs-indicator {
   position: absolute;
@@ -489,6 +494,20 @@ h1, h2, h3, h4, .font-display {
   border-top: 1px solid rgba(247, 183, 49, 0.2);
   animation: slideInBottom 0.45s cubic-bezier(0.34, 1.1, 0.64, 1) forwards;
 }
+
+@media (max-width: 768px) {
+  .cart-drawer {
+    width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    animation: slideInBottom 0.3s ease-out forwards;
+  }
+}
+
 .cart-drawer-handle {
   width: 48px;
   height: 5px;

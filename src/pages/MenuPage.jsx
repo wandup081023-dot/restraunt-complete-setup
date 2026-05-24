@@ -11,16 +11,6 @@ import { fetchMenuFromSheets } from '../utils/orderSubmit'
 import { getMenuItems } from '../utils/storage'
 import { getOrderPricing } from '../utils/pricing'
 
-const SECTION_IMAGES = {
-  Starters: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80',
-  Mains: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80',
-  Breads: 'https://images.unsplash.com/photo-1627308595216-3f62a8f7d8b0?auto=format&fit=crop&w=1200&q=80',
-  Rice: 'https://images.unsplash.com/photo-1631515243349-e0cb75fb8d1c?auto=format&fit=crop&w=1200&q=80',
-  Desserts: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=1200&q=80',
-  Drinks: 'https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=1200&q=80',
-  All: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80',
-}
-
 const CATEGORY_LABELS = {
   All: 'All Dishes',
   Starters: 'Starters',
@@ -50,152 +40,216 @@ const SparkIcon = () => (
   </svg>
 )
 
+// ─── HERO SECTION ────────────────────────────────────────────────────────────
 function HeroSection({ onBrowseMenu, onOpenCart, cartCount, cartTotal }) {
   const [searchParams] = useSearchParams()
   const tableNumber = searchParams.get('table') || '1'
 
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap');
-        .hero-wrap { background: #0d0d0d; min-height: 100vh; width: 100%; font-family: 'Jost', sans-serif; color: #F5F0E8; overflow: hidden; }
-        .hero-grid { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 64px); }
-        .hero-left { padding: 2.5rem; display: flex; flex-direction: column; justify-content: space-between; border-right: 0.5px solid rgba(201,168,76,0.2); }
-        .hero-right { display: flex; flex-direction: column; }
-        .top-bar { display: flex; align-items: center; justify-content: space-between; }
-        .logo-row { display: flex; align-items: center; gap: 12px; }
-        .logo-circle { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(201,168,76,0.5); overflow: hidden; }
-        .logo-circle img { width: 100%; height: 100%; object-fit: cover; }
-        .restaurant-name { font-family: 'Cormorant Garamond', serif; font-size: 15px; letter-spacing: 0.12em; color: #F5F0E8; }
-        .table-badge { font-size: 11px; letter-spacing: 0.18em; color: #C9A84C; border: 0.5px solid rgba(201,168,76,0.4); padding: 5px 14px; border-radius: 20px; }
-        .hero-main { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 3rem 0 2rem; }
-        .offer-label { font-size: 11px; letter-spacing: 0.2em; color: #888; text-transform: uppercase; margin-bottom: 1.2rem; }
-        .hero-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 5vw, 5rem); font-weight: 400; line-height: 1.05; color: #F5F0E8; margin: 0 0 1.5rem; }
-        .hero-heading span { color: #C9A84C; font-style: italic; }
-        .hero-sub { font-size: 14px; color: #888; font-weight: 300; letter-spacing: 0.04em; margin-bottom: 2.5rem; line-height: 1.7; max-width: 340px; }
-        .btn-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-        .btn-primary { background: #C9A84C; color: #0d0d0d; border: none; padding: 14px 28px; font-family: 'Jost', sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; border-radius: 2px; font-weight: 500; transition: background 0.25s; }
-        .btn-primary:hover { background: #E8D5A3; }
-        .btn-secondary { background: transparent; color: #F5F0E8; border: 0.5px solid rgba(245,240,232,0.3); padding: 14px 28px; font-family: 'Jost', sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; border-radius: 2px; transition: all 0.25s; }
-        .btn-secondary:hover { border-color: rgba(201,168,76,0.6); color: #C9A84C; }
-        .gold-line { width: 48px; height: 1px; background: #C9A84C; margin-bottom: 1.5rem; }
-        .hero-right-top { flex: 1.2; overflow: hidden; }
-        .hero-right-top img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.75) contrast(1.05); }
-        .hero-right-bottom { flex: 1; background: #161616; padding: 2rem 2.5rem; display: flex; flex-direction: column; justify-content: center; border-top: 0.5px solid rgba(201,168,76,0.15); }
-        .featured-label { font-size: 10px; letter-spacing: 0.22em; color: #C9A84C; text-transform: uppercase; margin-bottom: 0.8rem; }
-        .featured-name { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; color: #F5F0E8; margin: 0 0 0.5rem; }
-        .featured-desc { font-size: 13px; color: #888; font-weight: 300; margin-bottom: 1.2rem; line-height: 1.6; }
-        .featured-footer { display: flex; align-items: center; justify-content: space-between; }
-        .featured-price { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: #C9A84C; }
-        .badge-tag { font-size: 10px; letter-spacing: 0.15em; color: #C9A84C; border: 0.5px solid rgba(201,168,76,0.4); padding: 4px 12px; border-radius: 2px; }
-        .cart-bar { background: #1a1a1a; border-top: 0.5px solid rgba(201,168,76,0.25); padding: 1rem 2.5rem; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
-        .cart-bar:hover { background: #1f1f1f; }
-        .cart-left { display: flex; align-items: center; gap: 14px; }
-        .cart-icon-wrap { width: 36px; height: 36px; border: 0.5px solid rgba(201,168,76,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        .cart-text { font-size: 13px; color: #F5F0E8; margin: 0; }
-        .cart-count { font-size: 11px; color: #888; margin: 4px 0 0; }
-        .cart-total { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: #C9A84C; }
-        .stats-row { display: flex; gap: 2.5rem; padding-top: 1.5rem; border-top: 0.5px solid rgba(255,255,255,0.08); }
-        .stat-divider { width: 0.5px; background: rgba(255,255,255,0.08); }
-        .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: #C9A84C; margin: 0; }
-        .stat-label { font-size: 11px; color: #888; letter-spacing: 0.1em; margin: 4px 0 0; }
-        @media (max-width: 768px) {
-          .hero-grid { grid-template-columns: 1fr; }
-          .hero-right { display: none; }
-        }
-      `}</style>
-
-      <div className="hero-wrap">
-        <div className="hero-grid">
-          <div className="hero-left">
-            <div className="top-bar">
-              <div className="logo-row">
-                <div className="logo-circle">
-                  <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=80&q=80" alt="restaurant logo" />
-                </div>
-                <span className="restaurant-name">Zafran</span>
+    <div style={{
+      background: '#0d0d0d',
+      width: '100%',
+      fontFamily: "'Jost', sans-serif",
+      color: '#F5F0E8',
+      boxSizing: 'border-box',
+    }}>
+      {/* ── MAIN GRID ── */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'clamp(300px, 50%, 700px) 1fr',
+        minHeight: '100svh',
+      }}
+        className="hero-responsive-grid"
+      >
+        {/* LEFT COLUMN */}
+        <div style={{
+          padding: 'clamp(1.5rem, 4vw, 2.5rem)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          borderRight: '0.5px solid rgba(201,168,76,0.2)',
+          boxSizing: 'border-box',
+          minWidth: 0,
+        }}>
+          {/* Top bar */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{
+                width: '38px', height: '38px', borderRadius: '50%',
+                border: '1px solid rgba(201,168,76,0.5)', overflow: 'hidden', flexShrink: 0,
+              }}>
+                <img
+                  src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=80&q=80"
+                  alt="restaurant logo"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
               </div>
-              <span className="table-badge">TABLE {tableNumber}</span>
+              <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '15px', letterSpacing: '0.12em' }}>
+                Zafran
+              </span>
             </div>
+            <span style={{
+              fontSize: '11px', letterSpacing: '0.18em', color: '#C9A84C',
+              border: '0.5px solid rgba(201,168,76,0.4)', padding: '5px 14px',
+              borderRadius: '20px', whiteSpace: 'nowrap',
+            }}>
+              TABLE {tableNumber}
+            </span>
+          </div>
 
-            <div className="hero-main">
-              <div className="gold-line" />
-              <p className="offer-label">Today's Special</p>
-              <h1 className="hero-heading">
-                Every dish,<br />a <span>story</span><br />on your plate.
-              </h1>
-              <p className="hero-sub">
-                Handcrafted flavours rooted in tradition. Discover our curated menu and order directly from your table.
-              </p>
-              <div className="btn-row">
-                <button className="btn-primary" onClick={onBrowseMenu}>
-                  Browse Menu →
-                </button>
-                <button className="btn-secondary" type="button" onClick={onBrowseMenu}>
-                  Chef&apos;s Picks
-                </button>
-              </div>
-            </div>
-
-            <div className="stats-row">
-              <div>
-                <p className="stat-num">48+</p>
-                <p className="stat-label">Dishes</p>
-              </div>
-              <div className="stat-divider" />
-              <div>
-                <p className="stat-num">5</p>
-                <p className="stat-label">Categories</p>
-              </div>
-              <div className="stat-divider" />
-              <div>
-                <p className="stat-num">30yr</p>
-                <p className="stat-label">Heritage</p>
-              </div>
+          {/* Hero text */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: 'clamp(2rem,4vw,3rem) 0 2rem' }}>
+            <div style={{ width: '48px', height: '1px', background: '#C9A84C', marginBottom: '1.5rem' }} />
+            <p style={{ fontSize: '11px', letterSpacing: '0.2em', color: '#888', textTransform: 'uppercase', marginBottom: '1.2rem' }}>
+              Today's Special
+            </p>
+            <h1 style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: 'clamp(2.4rem, 5vw, 5rem)',
+              fontWeight: 400,
+              lineHeight: 1.05,
+              color: '#F5F0E8',
+              margin: '0 0 1.5rem',
+            }}>
+              Every dish,<br />
+              a <span style={{ color: '#C9A84C', fontStyle: 'italic' }}>story</span><br />
+              on your plate.
+            </h1>
+            <p style={{
+              fontSize: '14px', color: '#888', fontWeight: 300,
+              letterSpacing: '0.04em', marginBottom: '2.5rem',
+              lineHeight: 1.7, maxWidth: '340px',
+            }}>
+              Handcrafted flavours rooted in tradition. Discover our curated menu and order directly from your table.
+            </p>
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              <button
+                onClick={onBrowseMenu}
+                style={{
+                  background: '#C9A84C', color: '#0d0d0d', border: 'none',
+                  padding: '14px 28px', fontFamily: "'Jost', sans-serif",
+                  fontSize: '13px', letterSpacing: '0.14em', textTransform: 'uppercase',
+                  cursor: 'pointer', borderRadius: '2px', fontWeight: 500,
+                  minHeight: '48px', transition: 'background 0.25s',
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = '#E8D5A3'}
+                onMouseLeave={e => e.currentTarget.style.background = '#C9A84C'}
+              >
+                Browse Menu →
+              </button>
+              <button
+                onClick={onBrowseMenu}
+                style={{
+                  background: 'transparent', color: '#F5F0E8',
+                  border: '0.5px solid rgba(245,240,232,0.3)',
+                  padding: '14px 28px', fontFamily: "'Jost', sans-serif",
+                  fontSize: '13px', letterSpacing: '0.14em', textTransform: 'uppercase',
+                  cursor: 'pointer', borderRadius: '2px', minHeight: '48px',
+                  transition: 'all 0.25s',
+                }}
+              >
+                Chef&apos;s Picks
+              </button>
             </div>
           </div>
 
-          <div className="hero-right">
-            <div className="hero-right-top">
-              <img
-                src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?w=800&q=85"
-                alt="featured dish"
-              />
-            </div>
-            <div className="hero-right-bottom">
-              <p className="featured-label">Tempting Choice</p>
-              <h2 className="featured-name">Paneer Tikka</h2>
-              <p className="featured-desc">
-                Cottage cheese marinated in spiced yogurt, slow-grilled to perfection over charcoal.
-              </p>
-              <div className="featured-footer">
-                <span className="featured-price">₹249</span>
-                <span className="badge-tag">+ Best Seller</span>
-              </div>
-            </div>
+          {/* Stats row */}
+          <div style={{
+            display: 'flex', gap: 'clamp(1rem,3vw,2.5rem)',
+            paddingTop: '1.5rem',
+            borderTop: '0.5px solid rgba(255,255,255,0.08)',
+          }}>
+            {[['48+', 'Dishes'], ['5', 'Categories'], ['30yr', 'Heritage']].map(([num, label], i) => (
+              <React.Fragment key={label}>
+                {i > 0 && <div style={{ width: '0.5px', background: 'rgba(255,255,255,0.08)' }} />}
+                <div>
+                  <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.6rem', color: '#C9A84C', margin: 0 }}>{num}</p>
+                  <p style={{ fontSize: '11px', color: '#888', letterSpacing: '0.1em', margin: '4px 0 0' }}>{label}</p>
+                </div>
+              </React.Fragment>
+            ))}
           </div>
         </div>
 
-        {cartCount > 0 && (
-          <div className="cart-bar" onClick={onOpenCart}>
-            <div className="cart-left">
-              <div className="cart-icon-wrap">🛍</div>
-              <div>
-                <p className="cart-text">View Order</p>
-                <p className="cart-count">{cartCount} item{cartCount > 1 ? 's' : ''}</p>
-              </div>
-            </div>
-            <span className="cart-total">₹{cartTotal}</span>
+        {/* RIGHT COLUMN — hidden on mobile via CSS class */}
+        <div className="hero-right-panel" style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ flex: 1.2, overflow: 'hidden' }}>
+            <img
+              src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?w=800&q=85"
+              alt="featured dish"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.75) contrast(1.05)' }}
+            />
           </div>
-        )}
+          <div style={{
+            flex: 1, background: '#161616', padding: '2rem 2.5rem',
+            display: 'flex', flexDirection: 'column', justifyContent: 'center',
+            borderTop: '0.5px solid rgba(201,168,76,0.15)',
+          }}>
+            <p style={{ fontSize: '10px', letterSpacing: '0.22em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '0.8rem' }}>
+              Tempting Choice
+            </p>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '2rem', fontWeight: 400, color: '#F5F0E8', margin: '0 0 0.5rem' }}>
+              Paneer Tikka
+            </h2>
+            <p style={{ fontSize: '13px', color: '#888', fontWeight: 300, marginBottom: '1.2rem', lineHeight: 1.6 }}>
+              Cottage cheese marinated in spiced yogurt, slow-grilled to perfection over charcoal.
+            </p>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.6rem', color: '#C9A84C' }}>₹249</span>
+              <span style={{ fontSize: '10px', letterSpacing: '0.15em', color: '#C9A84C', border: '0.5px solid rgba(201,168,76,0.4)', padding: '4px 12px', borderRadius: '2px' }}>
+                + Best Seller
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
-    </>
+
+      {/* CART BAR — only when items in cart */}
+      {cartCount > 0 && (
+        <div
+          onClick={onOpenCart}
+          style={{
+            background: '#1a1a1a', borderTop: '0.5px solid rgba(201,168,76,0.25)',
+            padding: '1rem 2.5rem', display: 'flex', alignItems: 'center',
+            justifyContent: 'space-between', cursor: 'pointer',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <div style={{
+              width: '36px', height: '36px',
+              border: '0.5px solid rgba(201,168,76,0.4)', borderRadius: '50%',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px',
+            }}>🛍</div>
+            <div>
+              <p style={{ fontSize: '13px', color: '#F5F0E8', margin: 0 }}>View Order</p>
+              <p style={{ fontSize: '11px', color: '#888', margin: '4px 0 0' }}>{cartCount} item{cartCount > 1 ? 's' : ''}</p>
+            </div>
+          </div>
+          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.4rem', color: '#C9A84C' }}>
+            ₹{cartTotal}
+          </span>
+        </div>
+      )}
+
+      {/* MOBILE RESPONSIVE STYLES */}
+      <style>{`
+        @media (max-width: 768px) {
+          .hero-responsive-grid {
+            grid-template-columns: 1fr !important;
+            min-height: 100svh !important;
+          }
+          .hero-right-panel {
+            display: none !important;
+          }
+        }
+      `}</style>
+    </div>
   )
 }
 
+// ─── CART FAB ────────────────────────────────────────────────────────────────
 function CartCTA({ count, pricing, onClick, pulse }) {
   if (count === 0) return null
-
   return (
     <div className={`cart-fab ${pulse ? 'cart-fab-flash' : ''}`}>
       <div className="cart-fab-glow" />
@@ -226,6 +280,7 @@ function CartCTA({ count, pricing, onClick, pulse }) {
   )
 }
 
+// ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 export default function MenuPage() {
   const [searchParams] = useSearchParams()
   const tableNumber = searchParams.get('table') || '1'
@@ -248,6 +303,14 @@ export default function MenuPage() {
   const searchRef = useRef(null)
   const sectionRefs = useRef({})
 
+  // ── FIX 1: Scroll to top on mount ──────────────────────────────────────────
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual'
+    }
+  }, [])
+
   useEffect(() => {
     const load = async () => {
       try {
@@ -259,15 +322,11 @@ export default function MenuPage() {
             return
           }
         }
-      } catch {
-        /* fall through */
-      }
-
+      } catch { /* fall through */ }
       const local = getMenuItems()
       setMenuItems(local?.length ? local : defaultMenu)
       setLoading(false)
     }
-
     load()
   }, [settings])
 
@@ -292,29 +351,24 @@ export default function MenuPage() {
   }, [activeCategory, searchQuery, filter])
 
   const categories = useMemo(
-    () => ['All', ...Array.from(new Set(menuItems.map((item) => item.category).filter(Boolean)))],
+    () => ['All', ...Array.from(new Set(menuItems.map(item => item.category).filter(Boolean)))],
     [menuItems],
   )
 
   const filteredItems = useMemo(() => {
-    return menuItems.filter((item) => {
+    return menuItems.filter(item => {
       if (item.available === false) return false
-
       const matchCat = activeCategory === 'All' || item.category === activeCategory
       const query = searchQuery.trim().toLowerCase()
-      const matchSearch =
-        !query ||
-        item.name?.toLowerCase().includes(query) ||
-        item.description?.toLowerCase().includes(query)
+      const matchSearch = !query || item.name?.toLowerCase().includes(query) || item.description?.toLowerCase().includes(query)
       const matchFilter = filter === 'all' || (filter === 'veg' ? item.isVeg : !item.isVeg)
-
       return matchCat && matchSearch && matchFilter
     })
   }, [menuItems, activeCategory, searchQuery, filter])
 
   const catCounts = useMemo(() => {
     const map = {}
-    menuItems.forEach((item) => {
+    menuItems.forEach(item => {
       const key = item.category || 'Other'
       map[key] = (map[key] || 0) + 1
     })
@@ -324,13 +378,14 @@ export default function MenuPage() {
   if (loading) return <LoadingSpinner message="Curating the menu..." />
 
   const shouldShowSections = !searchQuery && filter === 'all'
+
   const handleBrowseMenu = () => {
-    const firstSection = sectionRefs.current[activeCategory === 'All' ? categories[1] : activeCategory]
-    firstSection?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    const target = document.getElementById('menu-by-course')
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   return (
-    <div className="menu-page min-h-dvh pb-28" style={{ paddingBottom: cartCount > 0 ? 118 : 36 }}>
+    <div className="menu-page min-h-dvh" style={{ paddingBottom: cartCount > 0 ? 118 : 36 }}>
       <HeroSection
         onBrowseMenu={handleBrowseMenu}
         onOpenCart={() => setCartOpen(true)}
@@ -343,14 +398,17 @@ export default function MenuPage() {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="min-w-0 flex-1">
               <p className="text-[10px] uppercase tracking-[0.38em] text-[rgba(245,240,232,0.46)]">Menu by course</p>
-              <h2 className="mt-2 font-display text-4xl font-semibold text-[var(--text-primary)]">Choose your course, then linger.</h2>
+              <h2 className="mt-2 font-display text-4xl font-semibold text-[var(--text-primary)]">
+                Choose your course, then linger.
+              </h2>
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
+              {/* Search button */}
               <div className="relative">
                 <button
                   type="button"
-                  onClick={() => setShowSearch((value) => !value)}
+                  onClick={() => setShowSearch(v => !v)}
                   className={`flex h-12 items-center gap-2 rounded-full border px-4 text-xs uppercase tracking-[0.22em] ${showSearch ? 'border-[rgba(201,168,76,0.34)] bg-[rgba(201,168,76,0.08)] text-[var(--gold-light)]' : 'border-[rgba(201,168,76,0.18)] bg-[rgba(255,255,255,0.02)] text-[rgba(245,240,232,0.7)]'}`}
                   aria-label="Search menu"
                 >
@@ -358,10 +416,11 @@ export default function MenuPage() {
                 </button>
               </div>
 
+              {/* Filter button */}
               <div className="relative">
                 <button
                   type="button"
-                  onClick={() => setShowFilterMenu((value) => !value)}
+                  onClick={() => setShowFilterMenu(v => !v)}
                   className={`flex h-12 items-center gap-2 rounded-full border px-4 text-xs uppercase tracking-[0.22em] ${filter !== 'all' ? 'border-[rgba(201,168,76,0.34)] bg-[rgba(201,168,76,0.08)] text-[var(--gold-light)]' : 'border-[rgba(201,168,76,0.18)] bg-[rgba(255,255,255,0.02)] text-[rgba(245,240,232,0.7)]'}`}
                   aria-label="Filter options"
                 >
@@ -373,19 +432,12 @@ export default function MenuPage() {
                   <>
                     <div className="fixed inset-0 z-20" onClick={() => setShowFilterMenu(false)} />
                     <div className="absolute right-0 top-14 z-30 w-44 overflow-hidden rounded-[20px] border border-[rgba(201,168,76,0.16)] bg-[rgba(15,15,15,0.96)] shadow-[0_28px_80px_rgba(0,0,0,0.32)] backdrop-blur-xl">
-                      {[
-                        { id: 'all', label: 'All Items' },
-                        { id: 'veg', label: 'Veg Only' },
-                        { id: 'nonveg', label: 'Non-Veg' },
-                      ].map((entry) => (
+                      {[{ id: 'all', label: 'All Items' }, { id: 'veg', label: 'Veg Only' }, { id: 'nonveg', label: 'Non-Veg' }].map(entry => (
                         <button
                           key={entry.id}
                           type="button"
                           className={`flex w-full items-center justify-between px-4 py-3 text-left text-sm transition-colors hover:bg-[rgba(201,168,76,0.08)] ${filter === entry.id ? 'text-[var(--gold-light)]' : 'text-[rgba(245,240,232,0.72)]'}`}
-                          onClick={() => {
-                            setFilter(entry.id)
-                            setShowFilterMenu(false)
-                          }}
+                          onClick={() => { setFilter(entry.id); setShowFilterMenu(false) }}
                         >
                           <span>{entry.label}</span>
                           {filter === entry.id && <span className="text-[var(--gold-light)]">•</span>}
@@ -408,7 +460,7 @@ export default function MenuPage() {
                   ref={searchRef}
                   type="text"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={e => setSearchQuery(e.target.value)}
                   placeholder="Search dishes, ingredients, or moods"
                   className="input-field h-14 rounded-full pl-12 pr-14"
                 />
@@ -418,9 +470,7 @@ export default function MenuPage() {
                     onClick={() => setSearchQuery('')}
                     className="absolute right-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-[rgba(201,168,76,0.22)] text-[var(--gold-light)]"
                     aria-label="Clear search"
-                  >
-                    ×
-                  </button>
+                  >×</button>
                 )}
               </div>
             </div>
@@ -430,21 +480,9 @@ export default function MenuPage() {
             <div className="mt-4 flex items-center justify-between border-t border-[rgba(201,168,76,0.14)] pt-4">
               <p className="text-sm text-[rgba(245,240,232,0.72)]">
                 <span className="font-medium text-[var(--text-primary)]">{filteredItems.length}</span> dishes
-                {searchQuery && (
-                  <span>
-                    {' '}
-                    for <span className="text-[var(--gold-light)]">“{searchQuery}”</span>
-                  </span>
-                )}
+                {searchQuery && <span> for <span className="text-[var(--gold-light)]">"{searchQuery}"</span></span>}
               </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setSearchQuery('')
-                  setFilter('all')
-                }}
-                className="text-xs uppercase tracking-[0.22em] text-[var(--gold-light)]"
-              >
+              <button type="button" onClick={() => { setSearchQuery(''); setFilter('all') }} className="text-xs uppercase tracking-[0.22em] text-[var(--gold-light)]">
                 Clear
               </button>
             </div>
@@ -453,76 +491,56 @@ export default function MenuPage() {
 
         <section className="mt-6">
           <div className="mb-4">
-            <CategoryTabs
-              categories={categories}
-              activeCategory={activeCategory}
-              onChange={setActiveCategory}
-              counts={catCounts}
-            />
+            <CategoryTabs categories={categories} activeCategory={activeCategory} onChange={setActiveCategory} counts={catCounts} />
           </div>
 
           {shouldShowSections ? (
             <div className="space-y-10">
-              {categories
-                .filter((category) => category !== 'All')
-                .map((category, index) => {
-                  const categoryItems = menuItems.filter((item) => item.available !== false && item.category === category)
-                  if (!categoryItems.length) return null
-
-                  return (
-                    <section
-                      key={category}
-                      ref={(node) => {
-                        if (node) sectionRefs.current[category] = node
-                      }}
-                      id={`section-${category}`}
-                      className="section-fade-enter rounded-[30px] border border-[rgba(201,168,76,0.12)] bg-[rgba(20,20,20,0.94)] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-sm"
-                      style={{ animationDelay: `${120 + index * 80}ms` }}
-                    >
-                      <div className="flex flex-col gap-3 border-b border-[rgba(201,168,76,0.1)] pb-4 md:flex-row md:items-end md:justify-between">
-                        <div className="max-w-xl">
-                          <p className="text-[10px] uppercase tracking-[0.38em] text-[rgba(245,240,232,0.4)]">{String(index + 1).padStart(2, '0')}</p>
-                          <h3 className="mt-1 font-display text-3xl font-semibold text-[var(--text-primary)]">
-                            {CATEGORY_LABELS[category] || category}
-                          </h3>
-                          <p className="mt-1 text-sm text-[rgba(245,240,232,0.66)]">
-                            {category === 'Starters' && 'Begin with something bright, crisp, and memorable.'}
-                            {category === 'Mains' && 'The heart of the meal, composed with depth and warmth.'}
-                            {category === 'Breads' && 'Freshly made accompaniments to complete the table.'}
-                            {category === 'Rice' && 'Fragrant, rich, and layered for a satisfying finish.'}
-                            {category === 'Desserts' && 'A final note that lands softly and lingers.'}
-                            {category === 'Drinks' && 'Cooling pours and refreshing pairings for the table.'}
-                          </p>
-                        </div>
-
-                        <div className="inline-flex items-center gap-2 rounded-full bg-[rgba(201,168,76,0.08)] px-3 py-2 text-[10px] uppercase tracking-[0.24em] text-[var(--gold-light)]">
-                          <SparkIcon /> {categoryItems.length} dishes
-                        </div>
+              {categories.filter(cat => cat !== 'All').map((category, index) => {
+                const categoryItems = menuItems.filter(item => item.available !== false && item.category === category)
+                if (!categoryItems.length) return null
+                return (
+                  <section
+                    key={category}
+                    ref={node => { if (node) sectionRefs.current[category] = node }}
+                    id={`section-${category}`}
+                    className="section-fade-enter rounded-[30px] border border-[rgba(201,168,76,0.12)] bg-[rgba(20,20,20,0.94)] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-sm"
+                    style={{ animationDelay: `${120 + index * 80}ms` }}
+                  >
+                    <div className="flex flex-col gap-3 border-b border-[rgba(201,168,76,0.1)] pb-4 md:flex-row md:items-end md:justify-between">
+                      <div className="max-w-xl">
+                        <p className="text-[10px] uppercase tracking-[0.38em] text-[rgba(245,240,232,0.4)]">{String(index + 1).padStart(2, '0')}</p>
+                        <h3 className="mt-1 font-display text-3xl font-semibold text-[var(--text-primary)]">
+                          {CATEGORY_LABELS[category] || category}
+                        </h3>
+                        <p className="mt-1 text-sm text-[rgba(245,240,232,0.66)]">
+                          {category === 'Starters' && 'Begin with something bright, crisp, and memorable.'}
+                          {category === 'Mains' && 'The heart of the meal, composed with depth and warmth.'}
+                          {category === 'Breads' && 'Freshly made accompaniments to complete the table.'}
+                          {category === 'Rice' && 'Fragrant, rich, and layered for a satisfying finish.'}
+                          {category === 'Desserts' && 'A final note that lands softly and lingers.'}
+                          {category === 'Drinks' && 'Cooling pours and refreshing pairings for the table.'}
+                        </p>
                       </div>
-
-                      <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-                        {categoryItems.map((item, itemIndex) => (
-                          <div
-                            key={item.id}
-                            className="section-fade-enter"
-                            style={{ animationDelay: `${180 + itemIndex * 50}ms`, animationFillMode: 'both' }}
-                          >
-                            <MenuCard item={item} />
-                          </div>
-                        ))}
+                      <div className="inline-flex items-center gap-2 rounded-full bg-[rgba(201,168,76,0.08)] px-3 py-2 text-[10px] uppercase tracking-[0.24em] text-[var(--gold-light)]">
+                        <SparkIcon /> {categoryItems.length} dishes
                       </div>
-                    </section>
-                  )
-                })}
+                    </div>
+                    <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                      {categoryItems.map((item, itemIndex) => (
+                        <div key={item.id} className="section-fade-enter" style={{ animationDelay: `${180 + itemIndex * 50}ms`, animationFillMode: 'both' }}>
+                          <MenuCard item={item} />
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                )
+              })}
             </div>
           ) : (
             <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {filteredItems.map((item, index) => (
-                <div
-                  key={item.id || index}
-                  className="section-fade-enter"
-                  style={{ animationDelay: `${Math.min(index, 8) * 70}ms`, animationFillMode: 'both' }}
-                >
+                <div key={item.id || index} className="section-fade-enter" style={{ animationDelay: `${Math.min(index, 8) * 70}ms`, animationFillMode: 'both' }}>
                   <MenuCard item={item} />
                 </div>
               ))}
@@ -532,7 +550,6 @@ export default function MenuPage() {
       </main>
 
       <CartCTA count={cartCount} pricing={cartPricing} onClick={() => setCartOpen(true)} pulse={cartFlash} />
-
       <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
     </div>
   )
